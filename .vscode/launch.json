@@ -1,0 +1,30 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+  {
+    "name": "sylar_debug",//!挑个容易识别的名字
+    "type": "cppdbg",
+    "request": "launch",
+    "program": "${workspaceFolder}/tests/ttcp_blocking",
+
+    "args": ["-r"],
+    "stopAtEntry": false,
+    "cwd": "${workspaceFolder}",
+    "environment": [],
+    "externalConsole": false,
+    "MIMode": "gdb",
+    "setupCommands": [
+      {
+        "description": "为 gdb 启用整齐打印",
+        "text": "-enable-pretty-printing",
+        "ignoreFailures": true
+      }
+    ],
+    //"preLaunchTask": "C/C++: g++-8 build active file",  //!不需要前置任务
+    "miDebuggerPath": "/usr/bin/gdb"
+  }
+]
+}
