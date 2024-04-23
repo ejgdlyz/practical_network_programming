@@ -8,16 +8,12 @@
 #include <sys/time.h>
 #include <unistd.h>
 
+#include "util/util.h"
+
 struct Message {
     int64_t request;
     int64_t response;
 } __attribute__ ((__packed__));
-
-int64_t GetNow() {
-    struct timeval tv = {0, 0};
-    gettimeofday(&tv, NULL);
-    return tv.tv_sec * (int64_t)(1000000) + tv.tv_usec;
-}
 
 void RunServer(const std::string& ip, int16_t port) {
     struct sockaddr_in serv_addr;
@@ -41,7 +37,7 @@ void RunServer(const std::string& ip, int16_t port) {
         socklen_t addrlen = sizeof(peer_addr);
         ssize_t nr = recvfrom(sock, &message, sizeof(message), 0, (struct sockaddr*)&peer_addr, &addrlen);
         if (nr == sizeof(message)) {
-            message.response = GetNow();
+            message.response = Util::GetNow();
             ssize_t nw = sendto(sock, &message, sizeof(message), 0, (struct sockaddr*)&peer_addr, addrlen);
             if (nw < 0) {
                 perror("fail to send message");
@@ -80,7 +76,7 @@ void RunClient(const std::string& ip, int16_t port) {
     std::thread thr([&sock, &serv_addr](){
         while (true) {
             Message message = {0, 0};
-            message.request = GetNow();
+            message.request = Util::GetNow();
             ssize_t nw = sendto(sock, &message, sizeof(message), 0, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
             if (nw < 0) {
                 perror("fail to send message");
@@ -100,7 +96,7 @@ void RunClient(const std::string& ip, int16_t port) {
         bzero(&peer_addr, sizeof(peer_addr));
         int nr = recvfrom(sock, &message, sizeof(message), 0, (struct sockaddr*)&peer_addr, &addr_len);
         if (nr == sizeof(message)) {
-            int64_t back = GetNow();
+            int64_t back = Util::GetNow();
             int64_t mine = (back + message.request) / 2;
             std::cout << "now " << back 
                     << " round trip " << back - message.request 

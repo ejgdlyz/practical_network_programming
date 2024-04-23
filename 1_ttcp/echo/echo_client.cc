@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <unistd.h>
 
-#include "tool.h"
+#include "util/util.h"
 
 // if client run as `./echo_client 127.0.0.1 3100 20480000`, the client and server will be blocked.
 int main(int argc, char const *argv[]) {
@@ -34,12 +34,12 @@ int main(int argc, char const *argv[]) {
     std::cout << "connected..., sending " << len << " bytes" << std::endl;
 
     std::string message(len, 's');
-    int nw = Tool::WriteFixedBytes(sockfd, message.c_str(), message.size());
+    int nw = Util::WriteFixedBytes(sockfd, message.c_str(), message.size());
     std::cout << "sent " << nw << " bytes" << std::endl;
 
     auto deleter = [](char* ptr){ delete ptr;};
     std::unique_ptr<char, decltype(deleter)> receive(new char[len], deleter);
-    int nr = Tool::ReadFixedBytes(sockfd, receive.get(), len);
+    int nr = Util::ReadFixedBytes(sockfd, receive.get(), len);
     std::cout << "received " << nr << " bytes" << std::endl;
     return 0;
 }

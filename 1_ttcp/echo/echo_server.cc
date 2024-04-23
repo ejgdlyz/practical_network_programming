@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <unistd.h>
 
-#include "tool.h"
+#include "util/util.h"
 
 // a thread-per-connection current echo sever;
 int main(int argc, char const *argv[]) {
@@ -47,7 +47,7 @@ int main(int argc, char const *argv[]) {
             char buf[4096];
             int nr = 0;
             while ((nr = read(connfd, buf, sizeof(buf))) > 0) {
-                int nw = Tool::WriteFixedBytes(connfd, buf, nr);
+                int nw = Util::WriteFixedBytes(connfd, buf, nr);
                 if (nw < nr) {
                     break;
                 }

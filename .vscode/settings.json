@@ -122,6 +122,7 @@
     "typeindex": "cpp",
     "variant": "cpp",
     "iomanip": "cpp",
-    "cerrno": "cpp"
+    "cerrno": "cpp",
+    "fstream": "cpp"
   }
 }

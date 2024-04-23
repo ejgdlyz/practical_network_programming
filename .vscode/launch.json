@@ -8,7 +8,9 @@
     "name": "sylar_debug",//!挑个容易识别的名字
     "type": "cppdbg",
     "request": "launch",
-    "program": "${workspaceFolder}/tests/ttcp_blocking",
+    // "program": "${workspaceFolder}/tests/ttcp_blocking",
+    "program": "${workspaceFolder}/tests/nodelay_server",
+
 
     "args": ["-r"],
     "stopAtEntry": false,
