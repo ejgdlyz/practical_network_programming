@@ -3,6 +3,7 @@ The C++ implementation of "Practical Network Prgramming" by chenshuo.
 
 ## 1 TTCP 
 1. The ttcp blocking implementation.
+   
     ```shell
     # shell 1
     $ while true; do ./tests/ttcp_blocking -r; done
@@ -12,6 +13,7 @@ The C++ implementation of "Practical Network Prgramming" by chenshuo.
     $ ./tests/ttcp_blocking -t localhost -l 1024000
     ```
 2. The simple echo server/client also may be blocked.
+   
     ```shell
     # shell 1
     $ ./tests/echo_server 127.0.0.1 3100
@@ -25,7 +27,8 @@ The C++ implementation of "Practical Network Prgramming" by chenshuo.
     ```
 
 ## 2 Roundtrip 
-1. how to use roundtrip_udp.cc to measure clock error. 
+1. how to use roundtrip_udp.cc to measure clock error.
+    
    ``` shell
    # shell 1 as server
    $ ./tests/roundtrip_udp -s 3100
@@ -40,6 +43,7 @@ The C++ implementation of "Practical Network Prgramming" by chenshuo.
     主要体现在如何正确关闭 TCP 连接。
    - 在注释了 nc_sender 的 safe close conection 情况下，如果 nc_receiver 在 nc_sender sleep(10) 期间发送了数据，那么将导致其最终无法收到完成的数据。
    - 使用 nc_sender 的 safe close conection，无论 nc_receiver 在 nc_sender sleep(10) 期间发不发送数据都能完全接收数据。
+  
    ```shell
     # shell 1
     $ ./nc_sender ttcp_blocking 1234 
@@ -51,6 +55,7 @@ The C++ implementation of "Practical Network Prgramming" by chenshuo.
     在所有并发 TCP 服务器中忽略 SIGPIPE 信号。
    - Nagle's Algorithm：
     Nale's Algorithm 可以减少网络延迟，但可能会增加应用程序延迟。
+    
     ```shell
     # shell 1
     $ ./nodelay_server 
@@ -67,3 +72,26 @@ The C++ implementation of "Practical Network Prgramming" by chenshuo.
     - 打开 `SO_REUSEADDR`
     - 忽略 `SIGPIPE`
     - 打开 `TCP_NODELAY`
+  
+3. 不同版本的 netcat 实现
+   - `chargen.cc`: 负载生成器。
+   - `netcat.cc` : thread-per-connection。
+   - `netcat.py`: IO 复用 + 阻塞 IO (`python`)。
+   - `netcat_nonblocking.py` : IO 复用 (ET) + 非阻塞 IO (`python`)。
+  
+    ```shell
+    # shell 1
+    $ ./chargen -l 1234 
+    # shell 2
+    $ nc localhost 1234 > /dev/null
+    $ nc localhost 1234 < /dev/zero > /dev/null  # 阻塞
+
+    $ ./netcat localhost 1234 > /dev/null
+    $ ./netcat localhost 1234 < /dev/zero > /dev/null  # 阻塞
+    
+    $ python netcat.py localhost 1234 > /dev/null
+    $ python netcat.py localhost 1234 < /dev/zero > /dev/null # 阻塞
+    
+    $ python netcat_nonblocking.py localhost 1234 > /dev/null
+    $ python netcat_nonblocking.py localhost 1234  < /dev/zero > /dev/null  # 正常
+    ```

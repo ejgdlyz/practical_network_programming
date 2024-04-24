@@ -48,6 +48,24 @@ bool Socket::close() {
     return false;
 }
 
+void Socket::shutdownWrite() {
+    if (!m_connected || m_sock == -1) {
+        return;
+    }
+    if (::shutdown(m_sock, SHUT_WR)) {
+        perror("Socket::shutdownWrite");
+    }
+}
+
+void Socket::shutdownRead() {
+    if (!m_connected || m_sock == -1) {
+        return;
+    }
+    if (::shutdown(m_sock, SHUT_RD)) {
+        perror("Socket::shutdownRead");
+    }
+}
+
 void Socket::initSocketOpt() {
     int val = 1;
     ::setsockopt(m_sock, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));

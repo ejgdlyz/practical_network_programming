@@ -48,6 +48,10 @@ int Util::ReadFixedBytes(Socket::ptr sock, void* buf, int length) {
     return nread;
 }
 
+int Util::ReceiveAll(Socket::ptr sock, void* buf, int length) {
+    return sock->recv(static_cast<char*>(buf), length, MSG_WAITALL);
+}
+
 int Util::WriteFixedBytes(Socket::ptr sock, const void* buf, int length) {
    int written = 0;
     while (written < length) {

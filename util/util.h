@@ -20,6 +20,7 @@ struct Util {
     static int ReadFixedBytes(int sockfd, void* buf, int length);
     static int WriteFixedBytes(int sockfd, const void* buf, int length);
 
+    static int ReceiveAll(Socket::ptr sockfd, void* buf, int length);
     static int ReadFixedBytes(Socket::ptr sockfd, void* buf, int length);
     static int WriteFixedBytes(Socket::ptr sockfd, const void* buf, int length);
     

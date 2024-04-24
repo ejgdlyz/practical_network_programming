@@ -31,13 +31,16 @@ public:
     Socket(int family, int type, int protocol = 0);
     ~Socket();
 
+    bool close();
+    void shutdownWrite();
+    void shutdownRead();
+
     Socket::ptr accpet();
 
     bool bind(const Address::ptr addr);
     bool connect(const Address::ptr addr, uint64_t timeout_ms = -1);
     bool listen(int backlog = SOMAXCONN);
-    bool close();
-
+    
     int send(const void* buffer, size_t length, int flags = 0);
     int send(const iovec* buffers, size_t length, int flags = 0);
     int sendTo(const void* buffer, size_t length, const Address::ptr to, int flags = 0);

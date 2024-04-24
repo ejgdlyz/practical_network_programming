@@ -58,6 +58,13 @@ add_executable(nodelay_client 3_netcat/nodelay_client.cc)
 add_dependencies(nodelay_client lambda)
 target_link_libraries(nodelay_client ${LIBS})
 
+add_executable(netcat 3_netcat/netcat.cc)
+add_dependencies(netcat lambda)
+target_link_libraries(netcat ${LIBS})
+
+add_executable(chargen 3_netcat/chargen.cc)
+add_dependencies(chargen lambda)
+target_link_libraries(chargen ${LIBS})
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/tests)     # 可执行文件路径
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)          # 库输出路径

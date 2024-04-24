@@ -9,10 +9,11 @@
     "type": "cppdbg",
     "request": "launch",
     // "program": "${workspaceFolder}/tests/ttcp_blocking",
-    "program": "${workspaceFolder}/tests/nodelay_server",
+    // "program": "${workspaceFolder}/tests/nodelay_server",
+    "program": "${workspaceFolder}/tests/netcat",
 
 
-    "args": ["-r"],
+    "args": ["-l", "3100"],
     "stopAtEntry": false,
     "cwd": "${workspaceFolder}",
     "environment": [],
