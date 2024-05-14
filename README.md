@@ -95,3 +95,18 @@ The C++ implementation of "Practical Network Prgramming" by chenshuo.
     $ python netcat_nonblocking.py localhost 1234 > /dev/null
     $ python netcat_nonblocking.py localhost 1234  < /dev/zero > /dev/null  # 正常
     ```
+4. 进程监控 procmon
+   
+   基于 [C++ 服务器框架](https://github.com/ejgdlyz/sylar) 实现非侵入式进程监控 —— procmon。procmon 可以被看作为一个定制化的 HTTP Server，它不关心网络的收发（write/read），只对特定的输入产生特定的响应（即业务逻辑）。
+   ```shell
+   # shell 1: 负载生成器，c(余弦), 80(80% 负载), 1(1 个线程)
+   $ dummyload c 80 1 
+   pid 8169
+   cycles=108322, secs=0.000963
+
+   # shell 2 监控 dummyload: 8169(被监控的进程 id) 8080(procmon 所在的端口号)
+   $ ./procmon 8169 8080
+
+   # 浏览器查看进程信息
+   http://192.168.233.128:8080/
+   ```
