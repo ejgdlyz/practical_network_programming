@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <iomanip>
 
-#include "util/socket.h"
+#include "sylar/socket.h"
 #include "util/util.h"
 
 int main(int argc, char *argv[])
@@ -43,14 +43,14 @@ int main(int argc, char *argv[])
     std::string hostname = argv[optind];
     int len = atoi(argv[optind  + 1]);
 
-    auto addr = Address::LookupAny(hostname + ":3210");
+    auto addr = sylar::Address::LookupAny(hostname + ":3210");
     if (!addr) {
         std::cout << "Unable to resolve " << argv[1] << std::endl;
         exit(1);
     }
 
     std::cout << "connecting to " << *addr << std::endl;
-    Socket::ptr sock = Socket::CreateTCPSocket();
+    sylar::Socket::ptr sock = sylar::Socket::CreateTCPSocket();
     bool rt = sock->connect(addr);
     if (!rt) {
         std::cout << "Unable to resolve " << *sock->getRemoteAddress() << std::endl;
@@ -58,10 +58,14 @@ int main(int argc, char *argv[])
     }
 
     if (nagle) {
-        sock->setTcpNoDelay(false);  // open Nagle
+        // sock->setTcpNoDelay(false);  // open Nagle
+        int val = 0;
+        sock->setOption(IPPROTO_TCP, TCP_NODELAY, &val, sizeof(val));
         std::cout << "connected, set TCP_NODELAY" << std::endl;
     } else {
-        sock->setTcpNoDelay(true); // close Nagle
+        int val = 1;
+        // sock->setTcpNoDelay(true); // close Nagle
+        sock->setOption(IPPROTO_TCP, TCP_NODELAY, &val, sizeof(val));
         std::cout << "connected" << std::endl;
     }
 

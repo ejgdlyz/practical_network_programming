@@ -32,7 +32,7 @@ int Util::ReadFixedBytes(int sockfd, void* buf, int length) {
     return nread;
 }
 
-int Util::ReadFixedBytes(Socket::ptr sock, void* buf, int length) {
+int Util::ReadFixedBytes(sylar::Socket::ptr sock, void* buf, int length) {
     int nread = 0;
     while (nread < length) {
         int nr = sock->recv(static_cast<char*>(buf) + nread, length - nread);
@@ -48,11 +48,11 @@ int Util::ReadFixedBytes(Socket::ptr sock, void* buf, int length) {
     return nread;
 }
 
-int Util::ReceiveAll(Socket::ptr sock, void* buf, int length) {
+int Util::ReceiveAll(sylar::Socket::ptr sock, void* buf, int length) {
     return sock->recv(static_cast<char*>(buf), length, MSG_WAITALL);
 }
 
-int Util::WriteFixedBytes(Socket::ptr sock, const void* buf, int length) {
+int Util::WriteFixedBytes(sylar::Socket::ptr sock, const void* buf, int length) {
    int written = 0;
     while (written < length) {
         int nw = sock->send(static_cast<const char*>(buf) + written, length - written);

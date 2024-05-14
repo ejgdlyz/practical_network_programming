@@ -14,15 +14,15 @@
 #include <iomanip>
 #include <memory>
 
-#include "socket.h"
+#include "sylar/socket.h"
 
 struct Util {
     static int ReadFixedBytes(int sockfd, void* buf, int length);
     static int WriteFixedBytes(int sockfd, const void* buf, int length);
 
-    static int ReceiveAll(Socket::ptr sockfd, void* buf, int length);
-    static int ReadFixedBytes(Socket::ptr sockfd, void* buf, int length);
-    static int WriteFixedBytes(Socket::ptr sockfd, const void* buf, int length);
+    static int ReceiveAll(sylar::Socket::ptr sockfd, void* buf, int length);
+    static int ReadFixedBytes(sylar::Socket::ptr sockfd, void* buf, int length);
+    static int WriteFixedBytes(sylar::Socket::ptr sockfd, const void* buf, int length);
     
     static int GetListenfd(uint16_t port);
     static int AcceptOrDie(uint16_t port);

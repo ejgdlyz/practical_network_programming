@@ -5,15 +5,18 @@
   "version": "0.2.0",
   "configurations": [
   {
-    "name": "sylar_debug",//!挑个容易识别的名字
+    "name": "xx_debug",//!挑个容易识别的名字
     "type": "cppdbg",
     "request": "launch",
     // "program": "${workspaceFolder}/tests/ttcp_blocking",
     // "program": "${workspaceFolder}/tests/nodelay_server",
-    "program": "${workspaceFolder}/tests/netcat",
-
-
-    "args": ["-l", "3100"],
+    // "program": "${workspaceFolder}/tests/netcat",
+    // "program": "${workspaceFolder}/tests/my_http_server",
+    "program": "${workspaceFolder}/tests/procmon",
+    // "program": "${workspaceFolder}/tests/dummyload",
+    
+    // "args": ["f", "80",  "1"],
+    "args": ["14366", "8080"],
     "stopAtEntry": false,
     "cwd": "${workspaceFolder}",
     "environment": [],

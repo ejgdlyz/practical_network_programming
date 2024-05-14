@@ -4,7 +4,7 @@
 #include <time.h>
 #include <atomic>
 
-#include "util/socket.h"
+#include "sylar/socket.h"
 #include "util/util.h"
 
 // a thread-per-connection current chargen server and client
@@ -41,7 +41,7 @@ void measure() {
     }
 }
 
-void chargen(Socket::ptr sock) {
+void chargen(sylar::Socket::ptr sock) {
     std::string message = GetMessage();
     while (true) {
         int nw = Util::WriteFixedBytes(sock, message.c_str(), message.size());
@@ -67,18 +67,18 @@ int main(int argc, char const *argv[]) {
     int port = atoi(argv[2]);
     if (strcmp(argv[1], "-l") == 0) {       // as server
         std::string hostname = "localhost:" + std::to_string(port);
-        auto addr = Address::LookupAny(hostname);
+        auto addr = sylar::Address::LookupAny(hostname);
         if (!addr) {
             std::cout << "Unable to resolve " << hostname << std::endl;
             return 0;
         }
-        auto serv_sock = Socket::CreateTCPSocket();
+        auto serv_sock = sylar::Socket::CreateTCPSocket();
         serv_sock->bind(addr);
         serv_sock->listen();
         std::cout << "Accepting... Ctrl-C to exit" << std::endl;
         int cnt = 0;
         while (true) {
-            auto client_sock = serv_sock->accpet();
+            auto client_sock = serv_sock->accept();
             std::cout << "accepted no. " << ++cnt << " client" << std::endl;
 
             std::thread thr(chargen, client_sock);
@@ -86,12 +86,12 @@ int main(int argc, char const *argv[]) {
         }
     } else {        // as client
         std::string serv_host = std::string(argv[1]) + ":" + std::to_string(port);
-        auto serv_addr = Address::LookupAny(serv_host);
+        auto serv_addr = sylar::Address::LookupAny(serv_host);
         if (!serv_addr) {
             std::cout << "Unable to resolve " << serv_host << std::endl;
             return 0;
         }
-        auto sock = Socket::CreateTCPSocket();
+        auto sock = sylar::Socket::CreateTCPSocket();
         bool rt = sock->connect(serv_addr);
         if (rt) {
             chargen(sock);

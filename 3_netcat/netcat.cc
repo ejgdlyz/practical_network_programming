@@ -2,12 +2,12 @@
 #include <thread>
 #include <vector>
 
-#include "util/socket.h"
+#include "sylar/socket.h"
 #include "util/util.h"
 
 // netcat implementation base on thread-per-connection
 
-void run(Socket::ptr sock) {
+void run(sylar::Socket::ptr sock) {
     // caution: a bad example for closing connection
     std::thread thr([&sock](){  // 网络线程 start: 网络线程不断地 socket 读，并将读到的数据发送到 stdout
         char buf[8192];
@@ -34,7 +34,7 @@ void run(Socket::ptr sock) {
     thr.join();
 }
 
-void run_grace(Socket::ptr sock) {
+void run_grace(sylar::Socket::ptr sock) {
     // use select() to exit gracefully
 
     int pipefds[2];
@@ -107,12 +107,12 @@ int main(int argc, char const *argv[]) {
     int port = atoi(argv[2]);
     if (strcmp(argv[1], "-l") == 0) {       // as server
         std::string host = "localhost:" + std::to_string(port);
-        auto addr = Address::LookupAny(host);
+        auto addr = sylar::Address::LookupAny(host);
         if (addr) {
-            auto listen_sock = Socket::CreateTCPSocket();
+            auto listen_sock = sylar::Socket::CreateTCPSocket();
             listen_sock->bind(addr);
             listen_sock->listen();
-            auto sock = listen_sock->accpet();
+            auto sock = listen_sock->accept();
             if (sock) {
                 listen_sock.reset();    // stop listening
                 // run(sock);              // unique_ptr more suitable
@@ -126,9 +126,9 @@ int main(int argc, char const *argv[]) {
         }
     } else {        // as client
         std::string hostname = std::string(argv[1]) + ":" + std::to_string(port);
-        auto addr = Address::LookupAny(hostname);
+        auto addr = sylar::Address::LookupAny(hostname);
         if (addr) {
-            auto client_sock = Socket::CreateTCPSocket();
+            auto client_sock = sylar::Socket::CreateTCPSocket();
             client_sock->connect(addr);
             if (client_sock) {
                 // run(client_sock);

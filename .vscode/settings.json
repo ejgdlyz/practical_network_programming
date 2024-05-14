@@ -123,6 +123,16 @@
     "variant": "cpp",
     "iomanip": "cpp",
     "cerrno": "cpp",
-    "fstream": "cpp"
-  }
+    "fstream": "cpp",
+    "forward_list": "cpp",
+    "buffer": "cpp",
+    "executor": "cpp",
+    "io_context": "cpp",
+    "netfwd": "cpp",
+    "socket": "cpp",
+    "future": "cpp",
+    "unordered_set": "cpp",
+    "valarray": "cpp"
+  },
+  "cmake.configureOnOpen": false
 }
